@@ -2,6 +2,7 @@ package org.example.entities
 
 import jakarta.persistence.Entity
 import jakarta.persistence.Id
+import jakarta.persistence.ManyToOne
 import java.sql.Blob
 import java.time.LocalDate
 
@@ -19,4 +20,7 @@ class Musica {
     var faixaNumero: Int? = null
 
     var arquivoFaixa: Blob? = null
+
+    @ManyToOne
+    var genero: Genero? = null
 }
