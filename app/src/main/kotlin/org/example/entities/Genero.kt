@@ -1,5 +1,14 @@
 package org.example.entities
 
-class Genero {
+import jakarta.persistence.Entity
+import jakarta.persistence.Id
+
+
+@Entity
+class Genero{
+    @Id
+    var id: Long? = null
+
+    var descricao: String? = null
 
 }

@@ -1,0 +1,9 @@
+version: "3.5"
+services:
+  sistema-dplayer-db:
+    image: postgres
+    container_name: sistema-dplayer-db
+    environment:
+      POSTGRES_DB: "dplayer"
+      POSTGRES_USERNAME: "dplayer"
+      POSTGRES_PASSWORD: "dplayer"
