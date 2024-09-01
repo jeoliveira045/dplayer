@@ -4,7 +4,6 @@ import jakarta.persistence.Entity
 import jakarta.persistence.Id
 import java.sql.Blob
 import java.time.LocalDate
-import java.util.Timer
 
 @Entity
 class Musica {
@@ -15,7 +14,7 @@ class Musica {
 
     var dtLancamento: LocalDate? = null
 
-    var duracao: Timer? = null
+    var duracao: String? = null
 
     var faixaNumero: Int? = null
 

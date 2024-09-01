@@ -7,7 +7,6 @@ import jakarta.persistence.Table
 import java.sql.Blob
 import java.sql.Time
 import java.time.LocalDate
-import java.util.Timer
 
 
 @Entity
@@ -20,7 +19,7 @@ class Album{
 
     var capa : Blob? = null
 
-    var duracao: Timer? = null
+    var duracao: String? = null
 
     var dataLancamento: LocalDate? = null
 
