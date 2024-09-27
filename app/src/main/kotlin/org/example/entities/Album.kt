@@ -3,6 +3,7 @@ package org.example.entities
 import jakarta.annotation.Nullable
 import jakarta.persistence.Entity
 import jakarta.persistence.Id
+import jakarta.persistence.Lob
 import jakarta.persistence.ManyToMany
 import jakarta.persistence.ManyToOne
 import jakarta.persistence.Table
@@ -19,7 +20,8 @@ class Album{
 
     var nome: String = ""
 
-    var capa : Blob? = null
+
+    var capa : ByteArray? = null
 
     var duracao: String? = null
 

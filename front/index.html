@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="rxjs.js" ></script>
+    <title>Document</title>
+</head>
+<body>
+    <!-- <h1>Formulario</h1>
+    <label>Nome</label> -->
+    <!-- <button id="rxjsButton" >Clique aqui rxjs</button> -->
+
+    <form id="meuFormulario">
+       <label for="id">Id:</label>
+       <input type="text" id="id" name="id"><br><br>
+
+        <label for="nome">Nome:</label>
+        <input type="text" id="nome" value="Sabaton" name="nome"><br><br>
+
+        <label for="nacionalidade">Nacionalidade:</label>
+        <input type="text" id="nacionalidade" value="Sweden" name="nacionalidade"><br><br>
+
+        <label for="imagem">Selecione um arquivo:</label>
+        <input type="file" id="imagem" name="imagem"><br><br>
+
+
+        <!-- <input type="submit" id="enviar" value="Enviar"> -->
+
+    </form>
+
+    <button id="enviar" >Clique aqui!</button>
+
+    <script>
+
+        const {fromEvent} = rxjs
+        const {map} = rxjs.operators
+
+        const nome = document.getElementById('nome').value;
+        const nacionalidade = document.getElementById('nacionalidade').value;
+        const imagemInput = document.getElementById('imagem');
+        const form = document.getElementById('meuFormulario')
+        // const rxjsButton = document.getElementById('rxjsButton');
+
+        // const click = fromEvent(rxjsButton, 'click')
+
+        // const doubleClicks = click.pipe(
+        //     map(() => 'cliques')
+        // )
+
+        // doubleClicks.subscribe(message => console.log(message)  )
+         let base64Image = ""
+
+    imagemInput.addEventListener('change', function(event) {
+        const file = event.target.files[0];
+        const reader = new FileReader();
+
+        reader.onload = function() {
+            base64Image = reader.result;  // Obtenha a string base64 aqui
+            // document.getElementById('preview').src = base64Image;  // Exibir imagem como pré-visualização
+        };
+
+        reader.readAsDataURL(file);  // Converte para base64
+    });
+
+    document.getElementById("enviar").addEventListener("click", function() {
+        uploadImage()
+    })
+
+    function uploadImage() {
+        const data = {
+            nome: nome,
+            nacionalidade: nacionalidade,
+            imagem: base64Image // Inclui a imagem codificada em base64
+        };
+
+        fetch('http://localhost:8080/artista', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+        .then(response => response.json())
+        .then(data => console.log('Sucesso:', data))
+        .catch((error) => console.error('Erro:', error));
+    }
+
+    </script>
+</body>
+</html>

@@ -1,6 +1,9 @@
 package org.example.rest
 
+import jakarta.persistence.Id
+import jakarta.persistence.ManyToOne
 import org.apache.tomcat.util.file.ConfigurationSource.Resource
+import org.example.entities.Genero
 import org.example.entities.Musica
 import org.example.repository.MusicaRepository
 import org.springframework.beans.factory.annotation.Autowired
@@ -14,6 +17,7 @@ import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
+import java.time.LocalDate
 
 @RestController
 @RequestMapping("/musica")
@@ -33,8 +37,15 @@ class MusicaRest {
     }
 
     @PostMapping
-    fun insert(@RequestBody resource: Musica): ResponseEntity<Musica> {
-        return ResponseEntity.ok(repository!!.save(resource))
+    fun insert(@RequestBody resource: MusicaDto): ResponseEntity<Musica> {
+        var musica = Musica()
+        musica.genero = resource.genero
+        musica.faixaNumero = resource.faixaNumero
+        musica.arquivoFaixa = resource.arquivoFaixa!!.encodeToByteArray()
+        musica.dtLancamento = resource.dtLancamento
+        musica.duracao = resource.duracao
+        musica.nome = resource.nome
+        return ResponseEntity.ok(repository!!.save(musica))
     }
 
     @PutMapping("/{id}")
@@ -48,4 +59,20 @@ class MusicaRest {
     }
 
 
+}
+
+class MusicaDto {
+    var id: Long? = null
+
+    var nome: String? = null
+
+    var dtLancamento: LocalDate? = null
+
+    var duracao: String? = null
+
+    var faixaNumero: Int? = null
+
+    var arquivoFaixa: String? = null
+
+    var genero: Genero? = null
 }
