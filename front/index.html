@@ -12,18 +12,26 @@
     <!-- <button id="rxjsButton" >Clique aqui rxjs</button> -->
 
     <form id="meuFormulario">
-       <label for="id">Id:</label>
-       <input type="text" id="id" name="id"><br><br>
+<!--       <label for="id">Id:</label>-->
+<!--       <input type="text" id="id" name="id"><br><br>-->
 
         <label for="nome">Nome:</label>
-        <input type="text" id="nome" value="Sabaton" name="nome"><br><br>
+        <input type="text" id="nome" value="Winged Hussars" name="nome"><br><br>
 
-        <label for="nacionalidade">Nacionalidade:</label>
-        <input type="text" id="nacionalidade" value="Sweden" name="nacionalidade"><br><br>
+        <label for="duracao">Duração:</label>
+        <input type="text" id="duracao" value="3:51" name="nome"><br><br>
 
-        <label for="imagem">Selecione um arquivo:</label>
-        <input type="file" id="imagem" name="imagem"><br><br>
+        <label for="genero">Genero:</label>
+        <input type="text" id="genero" value="1" name="nome"><br><br>
 
+        <label for="faixaNumero">Faixa:</label>
+        <input type="text" id="faixaNumero" value="1" name="nacionalidade"><br><br>
+
+        <label for="dtLancamento">Data de lançamento:</label>
+        <input type="date" id="dtLancamento" value="2016-10-06" name="nacionalidade"><br><br>
+
+        <label for="arquivoFaixa">Selecione um arquivo:</label>
+        <input type="file" accept="audio/*" id="arquivoFaixa" name="arquivoFaixa"><br><br>
 
         <!-- <input type="submit" id="enviar" value="Enviar"> -->
 
@@ -37,8 +45,12 @@
         const {map} = rxjs.operators
 
         const nome = document.getElementById('nome').value;
-        const nacionalidade = document.getElementById('nacionalidade').value;
-        const imagemInput = document.getElementById('imagem');
+        const genero = document.getElementById('genero').value;
+        const duracao = document.getElementById('duracao').value;
+        const faixaNumero = document.getElementById('faixaNumero').value;
+        const dtLancamento = document.getElementById('dtLancamento').value;
+        const arquivoFaixa = document.getElementById('arquivoFaixa');
+
         const form = document.getElementById('meuFormulario')
         // const rxjsButton = document.getElementById('rxjsButton');
 
@@ -51,17 +63,18 @@
         // doubleClicks.subscribe(message => console.log(message)  )
          let base64Image = ""
 
-    imagemInput.addEventListener('change', function(event) {
-        const file = event.target.files[0];
-        const reader = new FileReader();
+        arquivoFaixa.addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            const reader = new FileReader();
 
-        reader.onload = function() {
-            base64Image = reader.result;  // Obtenha a string base64 aqui
-            // document.getElementById('preview').src = base64Image;  // Exibir imagem como pré-visualização
-        };
+            reader.onload = function() {
+                base64Image = reader.result;  // Obtenha a string base64 aqui
+                // document.getElementById('preview').src = base64Image;  // Exibir imagem como pré-visualização
+            };
 
-        reader.readAsDataURL(file);  // Converte para base64
-    });
+            reader.readAsDataURL(file);  // Converte para base64
+        });
+
 
     document.getElementById("enviar").addEventListener("click", function() {
         uploadImage()
@@ -69,12 +82,18 @@
 
     function uploadImage() {
         const data = {
+            id: 1,
             nome: nome,
-            nacionalidade: nacionalidade,
-            imagem: base64Image // Inclui a imagem codificada em base64
+            genero: {
+                id: genero
+            },
+            arquivoFaixa: base64Image, // Inclui a imagem codificada em base64
+            duracao: duracao,
+            faixaNumero: faixaNumero,
+            dtLancamento: dtLancamento
         };
 
-        fetch('http://localhost:8080/artista', {
+        fetch('http://localhost:8080/musica', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

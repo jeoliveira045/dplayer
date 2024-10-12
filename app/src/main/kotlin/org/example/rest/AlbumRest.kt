@@ -31,7 +31,7 @@ class AlbumRest(private var repository: AlbumRepository) {
     }
 
     @GetMapping("{id}")
-    fun finddById(@PathVariable id: Long): ResponseEntity<Any>{
+    fun findById(@PathVariable id: Long): ResponseEntity<Any>{
         return ResponseEntity.ok(repository.findById(id).orElseThrow{ -> RuntimeException("Id não encontrado!")})
     }
     @PostMapping
