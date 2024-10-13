@@ -1,8 +1,9 @@
 package org.example.rest
 
 import org.apache.tomcat.util.file.ConfigurationSource.Resource
-import org.example.entities.Album
+import org.example.entities.AlbumType
 import org.example.repository.AlbumRepository
+import org.example.repository.AlbumTypeRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.jpa.repository.support.JpaRepositoryFactory
 import org.springframework.http.ResponseEntity
@@ -20,10 +21,10 @@ import org.springframework.web.bind.annotation.RestController
 class AlbumTypeRest {
 
     @Autowired
-    var repository: AlbumRepository? = null;
+    var repository: AlbumTypeRepository? = null;
 
     @GetMapping
-    fun findAll(): ResponseEntity<List<Album>> {
+    fun findAll(): ResponseEntity<List<AlbumType>> {
         return ResponseEntity.ok(repository!!.findAll())
     }
 
@@ -32,12 +33,12 @@ class AlbumTypeRest {
         return ResponseEntity.ok(repository!!.findById(id).orElseThrow{ -> RuntimeException("Id não encontrado!")})
     }
     @PostMapping
-    fun insert(@RequestBody resource: Album): ResponseEntity<Album> {
+    fun insert(@RequestBody resource: AlbumType): ResponseEntity<AlbumType> {
         return ResponseEntity.ok(repository!!.save(resource))
     }
 
     @PutMapping("/{id}")
-    fun update(@PathVariable id: Long, @RequestBody resource: Album): ResponseEntity<Album> {
+    fun update(@PathVariable id: Long, @RequestBody resource: AlbumType): ResponseEntity<AlbumType> {
         return ResponseEntity.ok(repository!!.save(resource))
     }
 
