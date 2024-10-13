@@ -1,12 +1,7 @@
 package org.example.entities
 
 import jakarta.annotation.Nullable
-import jakarta.persistence.Entity
-import jakarta.persistence.Id
-import jakarta.persistence.Lob
-import jakarta.persistence.ManyToMany
-import jakarta.persistence.ManyToOne
-import jakarta.persistence.Table
+import jakarta.persistence.*
 import java.sql.Blob
 import java.sql.Time
 import java.time.LocalDate
@@ -16,6 +11,7 @@ import java.time.LocalDate
 @Table(name = "ALBUM")
 class Album{
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ALBUM_SEQ")
     var id: Long = 0L
 
     var nome: String = ""

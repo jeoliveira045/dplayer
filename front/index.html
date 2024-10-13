@@ -61,20 +61,6 @@
         // )
 
         // doubleClicks.subscribe(message => console.log(message)  )
-         let base64Image = ""
-
-        arquivoFaixa.addEventListener('change', function(event) {
-            const file = event.target.files[0];
-            const reader = new FileReader();
-
-            reader.onload = function() {
-                base64Image = reader.result;  // Obtenha a string base64 aqui
-                // document.getElementById('preview').src = base64Image;  // Exibir imagem como pré-visualização
-            };
-
-            reader.readAsDataURL(file);  // Converte para base64
-        });
-
 
     document.getElementById("enviar").addEventListener("click", function() {
         uploadImage()
@@ -82,23 +68,26 @@
 
     function uploadImage() {
         const data = {
-            id: 1,
+            id: null,
             nome: nome,
             genero: {
                 id: genero
             },
-            arquivoFaixa: base64Image, // Inclui a imagem codificada em base64
+            arquivoFaixa: null,
             duracao: duracao,
             faixaNumero: faixaNumero,
             dtLancamento: dtLancamento
         };
 
+        const formData = new FormData()
+        formData.append('form', new Blob([JSON.stringify(data)], {type: 'application/json'}))
+        formData.append('file', arquivoFaixa.files[0])
+
+
+
         fetch('http://localhost:8080/musica', {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
+            body: formData
         })
         .then(response => response.json())
         .then(data => console.log('Sucesso:', data))

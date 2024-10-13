@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestPart
 import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.multipart.MultipartFile
 import java.sql.Blob
 import javax.sql.rowset.serial.SerialBlob
 import java.util.Base64
@@ -37,19 +39,21 @@ class ArtistaRest {
         return ResponseEntity.ok(repository!!.findById(id).orElseThrow{ -> RuntimeException("Id não encontrado!")})
     }
     @PostMapping
-    fun insert(@RequestBody resource: ArtistaDTO): ResponseEntity<Artista>{
-        var artista = Artista()
-        artista.id = resource.id
-        artista.nome = resource.nome
-        artista.nacionalidade = resource.nacionalidade
-        artista.imagem = resource.imagem!!.encodeToByteArray()
-        return ResponseEntity.ok(repository!!.save(artista))
+    fun insert(@RequestPart("form") resource: Artista,  @RequestPart("file") foto: MultipartFile): ResponseEntity<Artista>{
+        resource.imagem = foto.bytes
+        return ResponseEntity.ok(repository!!.save(resource))
     }
 
     @PutMapping("/{id}")
-    fun update(@PathVariable id: Long, @RequestBody resource: Artista): ResponseEntity<Artista> {
+    fun update(@RequestPart("form") resource: Artista,  @RequestPart("file") foto: MultipartFile): ResponseEntity<Artista>{
+        resource.imagem = foto.bytes
         return ResponseEntity.ok(repository!!.save(resource))
     }
+
+//    @PutMapping("/{id}")
+//    fun update(@PathVariable id: Long, @RequestBody resource: Artista): ResponseEntity<Artista> {
+//        return ResponseEntity.ok(repository!!.save(resource))
+//    }
 
     @DeleteMapping("/{id}")
     fun delete(@PathVariable id: Long): ResponseEntity<Unit> {
@@ -63,9 +67,3 @@ class ArtistaRest {
 
 
 }
-data class ArtistaDTO(
-    val id: Long?,
-    val nome: String?,
-    val nacionalidade: String?,
-    val imagem: String?
-)
